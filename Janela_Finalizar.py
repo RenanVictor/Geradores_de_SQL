@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from datetime import date
 from tkinter import messagebox
+from webbrowser import get
 
 # Variaveis
 hoje = date.today().strftime("%d/%m/%Y")
@@ -18,17 +19,24 @@ def valor_cbx(event):
 
 
 def sql_Finalizar():
-    if cbxBanco.get == "":
-        messagebox.showwarning("Favor selecionar um banco!")
-        return
     if txtOrdens == "":
         messagebox.showwarning("Favor informar um item válido!")
         return
-    sql_gerado = 'update '+cbxBanco.get()+' set ' + \
-        lblStatus['text']+' , Termino = ' + str(date.today())+\
-            " where OP_MAQ =  '"+txtOrdens.get()+ "'; \n"
-    print(sql_gerado)
-    txtFinalizados.insert(tk.END,"Item"+txtOrdens.get())
+    if cbxBanco.get() == "":
+        messagebox.showwarning("Favor selecionar um banco!")
+        return
+    if cbxBanco.get() == 'Pedidos':        
+        sql_gerado = 'update '+cbxBanco.get()+' set ' + \
+            lblStatus['text']+' , Termino = ' + str(date.today())+\
+                " where OP_MAQ =  '"+txtOrdens.get()+ "'; \n"
+        txtFinalizados.insert(tk.END,"Ordem: "+txtOrdens.get())
+        return print(sql_gerado)
+    else:
+        sql_gerado = 'update '+cbxBanco.get()+' set ' + \
+            lblStatus['text']+' , Termino = ' + str(date.today())+\
+                " where seq =  "+txtOrdens.get()+ "; \n"
+        txtFinalizados.insert(tk.END,"Item: "+txtOrdens.get())
+        return print(sql_gerado)
 
 
 # Recursos da Janela
