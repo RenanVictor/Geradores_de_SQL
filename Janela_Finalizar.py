@@ -28,14 +28,14 @@ def sql_Finalizar():
     if cbxBanco.get() == 'Pedidos':        
         sql_gerado = 'update '+cbxBanco.get()+' set ' + \
             lblStatus['text']+' , Termino = ' + str(date.today())+\
-                " where OP_MAQ =  '"+txtOrdens.get()+ "'; \n"
-        txtFinalizados.insert(tk.END,"Ordem: "+txtOrdens.get())
+                " where OP_MAQ =  '"+txtOrdens.get()+ "';"
+        txtFinalizados.insert(tk.END,"Ordem: "+txtOrdens.get()+"\n")
         return print(sql_gerado)
     else:
         sql_gerado = 'update '+cbxBanco.get()+' set ' + \
             lblStatus['text']+' , Termino = ' + str(date.today())+\
-                " where seq =  "+txtOrdens.get()+ "; \n"
-        txtFinalizados.insert(tk.END,"Item: "+txtOrdens.get())
+                " where seq =  "+txtOrdens.get()+ ";"
+        txtFinalizados.insert(tk.END,"Item: "+txtOrdens.get()+"\n")
         return print(sql_gerado)
 
 
