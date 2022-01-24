@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from datetime import date
 from tkinter import messagebox
-from webbrowser import get
+
 
 # Variaveis
 hoje = date.today().strftime("%d/%m/%Y")
@@ -19,6 +19,7 @@ def valor_cbx(event):
 
 
 def sql_Finalizar():
+    from Conexao import conectarBD
     if txtOrdens == "":
         messagebox.showwarning("Favor informar um item válido!")
         return
@@ -30,13 +31,13 @@ def sql_Finalizar():
             lblStatus['text']+' , Termino = ' + str(date.today())+\
                 " where OP_MAQ =  '"+txtOrdens.get()+ "';"
         txtFinalizados.insert(tk.END,"Ordem: "+txtOrdens.get()+"\n")
-        return print(sql_gerado)
+        return conectarBD(sql_gerado)
     else:
         sql_gerado = 'update '+cbxBanco.get()+' set ' + \
             lblStatus['text']+' , Termino = ' + str(date.today())+\
                 " where seq =  "+txtOrdens.get()+ ";"
         txtFinalizados.insert(tk.END,"Item: "+txtOrdens.get()+"\n")
-        return print(sql_gerado)
+        return conectarBD(sql_gerado)
 
 
 # Recursos da Janela
