@@ -46,11 +46,11 @@ def btn_finalizar():
     if cbxBanco.get() == 'Pedidos':
         txtFinalizados.insert(tk.END, "Ordem: "+txtOrdens.get()+"\n")
         print(sql_finalizar_pedidos())
-        return updates.gerar_update(sql_finalizar_pedidos())
+        return updates.status_montagem(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_finalizar_pedidos())
     else:
         txtFinalizados.insert(tk.END, "Item: "+txtOrdens.get()+"\n")
         print(sql_finalizar_laser())
-        return updates.gerar_update(sql_finalizar_laser())
+        return updates.status_programado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_finalizar_laser())
 
 
 def sql_Cancelar():

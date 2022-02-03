@@ -18,13 +18,14 @@ def gera_cursor(banco:psy):
 def retorna_status(item,banco):
     conexao = conectarBD()
     cursor = gera_cursor(conexao)
-    if item is int:
-        sql = "select status from "+banco+" where seq = "+item+';'
+    if banco == 'Laser':
+        sql = "select status from plan_laser where seq = "+item+';'
     else:
         sql = "select status from "+banco+" where OP_MAQ = '"+item+"';"
     cursor.execute(sql)
-    print(cursor.fetchone()[0])
     status = cursor.fetchone()[0]
+    print(status)
+    cursor.close()
     return status
 
 
@@ -37,7 +38,29 @@ def gerar_update(sql):
     print(cursor.rowcount)
     return msg.retorna_status_finalizado(cursor.rowcount)
 
-#retorna_status('1.220.677','Pedidos')
+def status_montagem(status,sql):
+    import Mensagens as msg
+    if status == 'Montagem':
+        return gerar_update(sql)
+    else:
+        return msg.nao_montagem()
+
+def status_programado(status,sql):
+    import Mensagens as msg
+    if status == 'Programado':
+        return gerar_update(sql)
+    else:
+        return msg.nao_montagem()
+
+def terminado(termino,sql):
+    import Mensagens as msg
+    if termino != "":
+        return gerar_update(sql)
+    else:
+        return msg.nao_montagem()
+
+
+#print (retorna_status('1.270.047','Pedidos'))
 #conectarBD('select * from pedidos where id = 1766;')
 #conectarBD("update pedidos set complemento = 'teste' where id = 1766")
 #print(cursor.fetchall())

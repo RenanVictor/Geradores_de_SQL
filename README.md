@@ -27,11 +27,23 @@ Este é um projeto simples para aprendizado pessoal.
 * [X] Banco Laser terá a opção de máquina (*Finalizado 2022-01-26*).
 * [X] Mensagem de finalizado com sucesso.
 * [X] Mensagem item não encontrado.
-* [ ] Mensagem de item já finalizado.
-* [ ] Finalizar apenas itens na montagem (Banco Pedidos).
+* [X] Finalizar apenas itens na montagem (Banco Pedidos).
+* [ ] Ajustar a inserção de item no textfield apenas para itens realizados com sucesso.
+* [ ] Ajustas os testes do botão cancelar e implementas as funções requeridas para validações.
+
+## 3. Versão fase BETA para teste com usuários (*Aguardando*)
+
+* [ ] Conseguir ler o usuário que está usando o programa
+* [ ] Criar tabela para armazenar os logs de finalização por usuário
+* [ ] Desenvolver executável para o programa
+* [ ] Definir os próximos recursos para a versão oficial
 
 ## **Testes**
 
 * ### **2022-01-25** - Consertado e testado a geração de atualização dos itens para o banco de dados *Laser*
 
 * ### **2022-01-27** - Realizado mais testes e corrigidos alguns erros de validação
+
+* ### **2022-02-01** - Testado as funções implementadas para a versão inicial 2.0 para o banco pedidos, Montado o fluxograma da função Finalizar
+
+* ### **2022-02-02** - Testado as funções implementadas para a versão inicial 2.0 para o banco plan_laser
