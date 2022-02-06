@@ -28,11 +28,12 @@ Este é um projeto simples para aprendizado pessoal.
 * [X] Mensagem de finalizado com sucesso.
 * [X] Mensagem item não encontrado.
 * [X] Finalizar apenas itens na montagem (Banco Pedidos).
-* [ ] Ajustar a inserção de item no textfield apenas para itens realizados com sucesso.
-* [ ] Ajustas os testes do botão cancelar e implementas as funções requeridas para validações.
+* [X] Ajustas os testes do botão cancelar e implementas as funções requeridas para validações.
+* [X] Corrigir o bug que pode enviar máquina em branco para o banco laser
 
 ## 3. Versão fase BETA para teste com usuários (*Aguardando*)
 
+* [ ] Ajustar a inserção de item no textfield apenas para itens realizados com sucesso.
 * [ ] Conseguir ler o usuário que está usando o programa
 * [ ] Criar tabela para armazenar os logs de finalização por usuário
 * [ ] Desenvolver executável para o programa
@@ -47,3 +48,5 @@ Este é um projeto simples para aprendizado pessoal.
 * ### **2022-02-01** - Testado as funções implementadas para a versão inicial 2.0 para o banco pedidos, Montado o fluxograma da função Finalizar
 
 * ### **2022-02-02** - Testado as funções implementadas para a versão inicial 2.0 para o banco plan_laser
+
+* ### **2022-02-03** - Acertado e testado funcionalizadde do botão cancelar para o banco *pedidos*

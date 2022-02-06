@@ -28,6 +28,16 @@ def retorna_status(item,banco):
     cursor.close()
     return status
 
+def retorna_termino(item):
+    conexao = conectarBD()
+    cursor = gera_cursor(conexao)
+    sql = "select termino from pedidos where OP_MAQ = '"+item+"';"
+    cursor.execute(sql)
+    termino = cursor.fetchone()[0]
+    print(termino)
+    cursor.close()
+    return termino
+
 
 def gerar_update(sql):
     import Mensagens as msg
@@ -54,13 +64,21 @@ def status_programado(status,sql):
 
 def terminado(termino,sql):
     import Mensagens as msg
-    if termino != "":
+    if termino != None:
         return gerar_update(sql)
     else:
-        return msg.nao_montagem()
+        return msg.nao_terminado()
+
+def status_finalizado(status,sql):
+    import Mensagens as msg
+    if status == "Finalizado":
+        return gerar_update(sql)
+    else:
+        return msg.nao_terminado()
 
 
-#print (retorna_status('1.270.047','Pedidos'))
+#print (retorna_termino('1.270.047'))
+
 #conectarBD('select * from pedidos where id = 1766;')
 #conectarBD("update pedidos set complemento = 'teste' where id = 1766")
 #print(cursor.fetchall())

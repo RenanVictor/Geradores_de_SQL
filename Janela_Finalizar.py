@@ -29,7 +29,6 @@ def sql_finalizar_pedidos():
         "' where OP_MAQ =  '"+txtOrdens.get() + "';"
     return sql_gerado
 
-
 def sql_finalizar_laser():
     sql_gerado = "update plan_laser set " + \
         lblStatus['text']+" , Termino = '" + str(date.today()) + "', maquina = '"+cbx_maquina.get() +\
@@ -48,30 +47,30 @@ def btn_finalizar():
         print(sql_finalizar_pedidos())
         return updates.status_montagem(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_finalizar_pedidos())
     else:
-        txtFinalizados.insert(tk.END, "Item: "+txtOrdens.get()+"\n")
-        print(sql_finalizar_laser())
-        return updates.status_programado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_finalizar_laser())
+        if cbx_maquina.get() !='':
+            txtFinalizados.insert(tk.END, "Item: "+txtOrdens.get()+"\n")
+            print(sql_finalizar_laser())
+            return updates.status_programado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_finalizar_laser())
+        else:
+            return Mensagens.sem_maquina()
 
 
 def sql_Cancelar():
-    #import Conexao as updates
+    import Conexao as updates
     if cbxBanco.get() == "":
         return Mensagens.banco_invalido()
     if txtOrdens.get() == "":
         return Mensagens.item_invalido()
     if cbxBanco.get() == 'Pedidos':
-        sql_gerado = 'update '+cbxBanco.get() + \
-            " set status = 'Montagem', Termino = null where OP_MAQ =  '"+txtOrdens.get() + \
-            "';"
+        sql_gerado = 'update '+cbxBanco.get() +" set status = 'Montagem', Termino = null where OP_MAQ =  '"+txtOrdens.get()+"';"
         txtFinalizados.insert(tk.END, "Cancelado Ordem: "+txtOrdens.get()+"\n")
         print(sql_gerado)
-        # return updates.gerar_update(sql_gerado)
+        return updates.terminado(updates.retorna_termino(txtOrdens.get()),sql_gerado)
     else:
-        sql_gerado = 'update '+cbxBanco.get() + \
-            " set status = 'Programado', Termino = null where seq =  "+txtOrdens.get() + ";"
+        sql_gerado = "update plan_laser set status = 'Programado', Termino = null where seq =  "+txtOrdens.get() + ";"
         txtFinalizados.insert(tk.END, "Cancelado Item: "+txtOrdens.get()+"\n")
         print(sql_gerado)
-        # return updates.gerar_update(sql_gerado)
+        return updates.status_finalizado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_gerado)
 
 
 # Recursos da Janela

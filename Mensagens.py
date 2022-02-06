@@ -22,3 +22,6 @@ def nao_programado():
 
 def nao_terminado():
     return msx.showwarning(title='Não Terminado',message='O item informado não está finalizado e não pode ser cancelado!')
+
+def sem_maquina():
+    return msx.showwarning(title='Sem máquina',message='Favor selecionar uma máquina!')
