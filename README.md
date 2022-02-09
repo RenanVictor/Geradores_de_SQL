@@ -12,7 +12,7 @@ Este é um projeto simples para aprendizado pessoal.
 
 ## **Status**
 
-### Projeto em faze inicial, com apenas alguns simples recursos de sql
+### Projeto em fase inicial, com apenas alguns simples recursos de sql
 
 ## 1. Versão Inicial
 
@@ -21,7 +21,7 @@ Este é um projeto simples para aprendizado pessoal.
 * Mostra os itens finalizados enquanto o programa está rodando.
 * Comunicação direta com o banco de dados (Arquivo **Conexao.py**)
 
-## 2. Versão Inicial para usuário (*Em desenvolvimento*)
+## 2. Versão Inicial para usuário (*Finalizado - 2022-02-04*)
 
 * [X] Botão para cancelar itens finalizados (*Finalizado 2022-01-25*)
 * [X] Banco Laser terá a opção de máquina (*Finalizado 2022-01-26*).
@@ -31,13 +31,16 @@ Este é um projeto simples para aprendizado pessoal.
 * [X] Ajustas os testes do botão cancelar e implementas as funções requeridas para validações.
 * [X] Corrigir o bug que pode enviar máquina em branco para o banco laser
 
-## 3. Versão fase BETA para teste com usuários (*Aguardando*)
+## 3. Versão fase BETA para teste com usuários (*Em desenvolvimento*)
 
 * [ ] Ajustar a inserção de item no textfield apenas para itens realizados com sucesso.
-* [ ] Conseguir ler o usuário que está usando o programa
+* [X] Conseguir ler o usuário que está usando o programa **log_usuario.py**
 * [ ] Criar tabela para armazenar os logs de finalização por usuário
 * [ ] Desenvolver executável para o programa
 * [ ] Definir os próximos recursos para a versão oficial
+* [ ] Corrigir problema de quando encontrar mais de uma chave para a ordem informada (banco pedidos)
+
+## 4. Lançamento para usuário final com acomnpanhamentos (*Aguardando*)
 
 ## **Testes**
 
