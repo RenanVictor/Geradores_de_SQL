@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from datetime import date
 import Mensagens
+import log_usuario 
 
 
 # Variaveis
@@ -45,12 +46,16 @@ def btn_finalizar():
     if cbxBanco.get() == 'Pedidos':
         txtFinalizados.insert(tk.END, "Ordem: "+txtOrdens.get()+"\n")
         print(sql_finalizar_pedidos())
+        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql_finalizar_laser())
         return updates.status_montagem(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_finalizar_pedidos())
+        
     else:
         if cbx_maquina.get() !='':
             txtFinalizados.insert(tk.END, "Item: "+txtOrdens.get()+"\n")
             print(sql_finalizar_laser())
+            log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql_finalizar_laser())
             return updates.status_programado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_finalizar_laser())
+            
         else:
             return Mensagens.sem_maquina()
 
@@ -65,11 +70,13 @@ def sql_Cancelar():
         sql_gerado = 'update '+cbxBanco.get() +" set status = 'Montagem', Termino = null where OP_MAQ =  '"+txtOrdens.get()+"';"
         txtFinalizados.insert(tk.END, "Cancelado Ordem: "+txtOrdens.get()+"\n")
         print(sql_gerado)
+        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql_finalizar_laser())
         return updates.terminado(updates.retorna_termino(txtOrdens.get()),sql_gerado)
     else:
         sql_gerado = "update plan_laser set status = 'Programado', Termino = null where seq =  "+txtOrdens.get() + ";"
         txtFinalizados.insert(tk.END, "Cancelado Item: "+txtOrdens.get()+"\n")
         print(sql_gerado)
+        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql_finalizar_laser())
         return updates.status_finalizado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_gerado)
 
 

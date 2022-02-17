@@ -25,3 +25,8 @@ def nao_terminado():
 
 def sem_maquina():
     return msx.showwarning(title='Sem máquina',message='Favor selecionar uma máquina!')
+
+def registros_multiplos():
+    return msx.showwarning(title='Registros múltiplos',message='O item informado retornou vários registros, favor analisar um item único!')
+
+    

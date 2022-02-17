@@ -31,16 +31,19 @@ Este é um projeto simples para aprendizado pessoal.
 * [X] Ajustas os testes do botão cancelar e implementas as funções requeridas para validações.
 * [X] Corrigir o bug que pode enviar máquina em branco para o banco laser
 
-## 3. Versão fase BETA para teste com usuários (*Em desenvolvimento*)
+## 3. Versão fase BETA para teste com usuários (*Finalizado 2022-02-17*)
 
-* [ ] Ajustar a inserção de item no textfield apenas para itens realizados com sucesso.
 * [X] Conseguir ler o usuário que está usando o programa **log_usuario.py**
-* [ ] Criar tabela para armazenar os logs de finalização por usuário
-* [ ] Desenvolver executável para o programa
-* [ ] Definir os próximos recursos para a versão oficial
-* [ ] Corrigir problema de quando encontrar mais de uma chave para a ordem informada (banco pedidos)
+* [X] Criar tabela para armazenar os logs de finalização por usuário **tabela postgre log_usuario**
+* [X] Desenvolver executável para o programa (*<https://datatofish.com/executable-pyinstaller/>*)
+* [X] Corrigir problema de quando encontrar mais de uma chave para a ordem informada (*Correção não testada*)
+* [X] Armazenar todos os registros enviados para finalizar itens para a tabela *log_usuario*
+* [X] Gerar o insert através da lista de registros
 
 ## 4. Lançamento para usuário final com acomnpanhamentos (*Aguardando*)
+
+* [ ] Trazer os histórico de registros por usuário sempre que abrir o programa (registros mensais)
+* [ ] Melhorar o código para as futuras implementações de novos recursos
 
 ## **Testes**
 
