@@ -3,6 +3,7 @@ from tkinter import ttk
 from datetime import date
 import Mensagens
 import log_usuario 
+import gerenciamento_sql as gtsql
 
 
 # Variaveis
@@ -10,6 +11,20 @@ hoje = date.today().strftime("%d/%m/%Y")
 
 
 # Funções
+def dict_tabelas():
+    pedidos = { 'banco': 'pedidos',
+        'col_primaria': 'OP_MAQ',
+        'nome':'Pedidos',
+        'col_update':['status','termino']
+    }
+    laser = { 'banco': 'plan_laser',
+        'col_primaria': 'SEQ',
+        'nome':'Laser',
+        'col_update':['status','termino','maquina']
+    }
+    bancos = [pedidos,laser]
+    return bancos
+
 def valor_cbx(event):
     if cbxBanco.get() == "Pedidos":
         lblStatus['text'] = "Status = 'Pronto'"
@@ -23,61 +38,46 @@ def valor_cbx(event):
         lbl_maquina.grid(row=3, column=0, sticky='w', padx=5, pady=5)
         cbx_maquina.grid(row=3, column=1, sticky='w', padx=5, pady=5)
 
-
-def sql_finalizar_pedidos():
-    sql_gerado = 'update '+cbxBanco.get()+' set ' + \
-        lblStatus['text']+" , Termino = '" + str(date.today()) +\
-        "' where OP_MAQ =  '"+txtOrdens.get() + "';"
-    return sql_gerado
-
-def sql_finalizar_laser():
-    sql_gerado = "update plan_laser set " + \
-        lblStatus['text']+" , Termino = '" + str(date.today()) + "', maquina = '"+cbx_maquina.get() +\
-        "' where seq =  "+txtOrdens.get() + ";"
-    return sql_gerado
-
-
 def btn_finalizar():
     import Conexao as updates
+    import gerenciamento_sql as gtsql
     if txtOrdens.get() == "":
         return Mensagens.item_invalido()
     if cbxBanco.get() == "":
         return Mensagens.banco_invalido()
+    sql = gtsql.gerenciamento_sql(cbxBanco.get(),txtOrdens.get())
     if cbxBanco.get() == 'Pedidos':
         txtFinalizados.insert(tk.END, "Ordem: "+txtOrdens.get()+"\n")
-        print(sql_finalizar_pedidos())
-        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql_finalizar_laser())
-        return updates.status_montagem(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_finalizar_pedidos())
-        
+        print(sql.sql_finalizar_pedidos())
+        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql.sql_finalizar_pedidos())
+        return updates.status_montagem(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql.sql_finalizar_pedidos())
     else:
         if cbx_maquina.get() !='':
             txtFinalizados.insert(tk.END, "Item: "+txtOrdens.get()+"\n")
-            print(sql_finalizar_laser())
-            log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql_finalizar_laser())
-            return updates.status_programado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_finalizar_laser())
-            
+            print(sql.sql_finalizar_laser(cbx_maquina.get()))
+            log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql.sql_finalizar_laser(cbx_maquina.get()))
+            return updates.status_programado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql.sql_finalizar_laser())
         else:
             return Mensagens.sem_maquina()
-
-
+2
 def sql_Cancelar():
     import Conexao as updates
+    import gerenciamento_sql as gtsql
     if cbxBanco.get() == "":
         return Mensagens.banco_invalido()
     if txtOrdens.get() == "":
         return Mensagens.item_invalido()
-    if cbxBanco.get() == 'Pedidos':
-        sql_gerado = 'update '+cbxBanco.get() +" set status = 'Montagem', Termino = null where OP_MAQ =  '"+txtOrdens.get()+"';"
+    sql = gtsql.gerenciamento_sql(cbxBanco.get(),txtOrdens.get())
+    if cbxBanco.get() == 'Pedidos':        
         txtFinalizados.insert(tk.END, "Cancelado Ordem: "+txtOrdens.get()+"\n")
-        print(sql_gerado)
-        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql_finalizar_laser())
-        return updates.terminado(updates.retorna_termino(txtOrdens.get()),sql_gerado)
+        print(sql.sql_cancelar_pedidos())
+        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql.sql_cancelar_pedidos())
+        return updates.terminado(updates.retorna_termino(txtOrdens.get()),sql.sql_cancelar_pedidos())
     else:
-        sql_gerado = "update plan_laser set status = 'Programado', Termino = null where seq =  "+txtOrdens.get() + ";"
         txtFinalizados.insert(tk.END, "Cancelado Item: "+txtOrdens.get()+"\n")
-        print(sql_gerado)
-        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql_finalizar_laser())
-        return updates.status_finalizado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql_gerado)
+        print(sql.sql_cancelar_laser())
+        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql.sql_cancelar_laser())
+        return updates.status_finalizado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql.sql_cancelar_laser())
 
 
 # Recursos da Janela
@@ -91,7 +91,7 @@ lblTabela = tk.Label(tblFrame, text='Selecione a Tabela:')
 lblStatus = tk.Label(tblFrame, text='Status = ')
 lblData = tk.Label(tblFrame, text='Data = '+hoje)
 lblOrdens = tk.Label(tblFrame, text='Favor informar o ID!')
-cbxBanco = ttk.Combobox(tblFrame, width=17, values=["Pedidos", "Laser"])
+cbxBanco = ttk.Combobox(tblFrame, width=17, values=["Pedidos", "Plan_laser"])
 txtOrdens = tk.Entry(tblFrame)
 btnFinalizar = tk.Button(tblBotoes, text='Finalizar', command=btn_finalizar)
 btnCancelar = tk.Button(tblBotoes, text='Cancelar', command=sql_Cancelar)

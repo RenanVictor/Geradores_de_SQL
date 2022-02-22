@@ -1,4 +1,3 @@
-from sqlite3 import Cursor
 import psycopg2 as psy
 import Mensagens as msg
 
@@ -51,7 +50,6 @@ def retorna_termino(item):
     cursor.close()
     return termino
 
-
 def gerar_update(sql):
     conexao = conectarBD()
     cursor = gera_cursor(conexao) 
@@ -67,7 +65,6 @@ def gerar_insert(insert,list_valores):
     conexao.commit()
     print("log atualizado")
     
-
 def status_montagem(status,sql):
     if status == 'Montagem':
         return gerar_update(sql)

@@ -40,6 +40,10 @@ Este é um projeto simples para aprendizado pessoal.
 * [X] Armazenar todos os registros enviados para finalizar itens para a tabela *log_usuario*
 * [X] Gerar o insert através da lista de registros
 
+### 3.1
+
+* O campo do combobox_banco passa de Laser para plan_laser (nome íntegro da tabela)
+
 ## 4. Lançamento para usuário final com acomnpanhamentos (*Aguardando*)
 
 * [ ] Trazer os histórico de registros por usuário sempre que abrir o programa (registros mensais)
