@@ -47,7 +47,8 @@ Este é um projeto simples para aprendizado pessoal.
 ## 4. Lançamento para usuário final com acomnpanhamentos (*Aguardando*)
 
 * [ ] Trazer os histórico de registros por usuário sempre que abrir o programa (registros mensais)
-* [ ] Melhorar o código para as futuras implementações de novos recursos
+* [X] Melhorar o código para as futuras implementações de novos recursos
+* [ ] Modelagem de opções de acordo com os registros nas tabelas escolhidas
 
 ## **Testes**
 
