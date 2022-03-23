@@ -1,29 +1,26 @@
 import os
 import Conexao
 
-def retorna_usuario():
-    return os.getlogin()
+class usuario:
+    def __init__(self,dict_banco,dict_valores):
+        self.banco = dict_banco
+        self.valores = dict_valores
+        
+    def list_valores(self):
+        from datetime import date
+        data_log = date.today()
+        usuario = os.getlogin()
+        lista_select = Conexao.atualiza_banco('select',self.banco,str(self.valores['item']))
+        list_valores = [self.banco['banco'] ,self.valores['item'],data_log,usuario,lista_select['count_row'],lista_select['sql_gerado']]
+        print(list_valores)
+        return list_valores
 
-def list_valores(banco,item,sql):
-    from datetime import date
-    data_log = date.today()
-    usuario = retorna_usuario()
-    registros = retorna_registros(banco,item)
-    list_valores = [banco,item,data_log,usuario,registros,sql]
-    return list_valores
-
-def retorna_registros(banco,item):
-    select = Conexao.retorna_sql(banco,item)
-    num_registros = Conexao.row_counts(select)
-    return num_registros
-
-def retorna_insert():
-    insert = "insert into log_usuario (banco, item, data_log, usuario, num_registro, log_sql) values(%s, %s, %s, %s, %s, %s)"
-    return insert
-
-def atualiza_usuario(banco,item,sql):
-    Conexao.gerar_insert(retorna_insert(),list_valores(banco,item,sql))
-    
+    def insert_usuario(self):
+        import bancos
+        dict_log = bancos.find_dict('log_usuario')
+        Conexao.atualiza_banco('insert',dict_log,self.list_valores())
+        print('Log atualizado com sucesso!')
+   
 
 
 

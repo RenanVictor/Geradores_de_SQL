@@ -1,7 +1,9 @@
+from numpy import append
 import psycopg2 as psy
 import Mensagens as msg
+import gerenciamento_sql as gtsql
 
-def conectarBD():
+def conectarBD():  # Se conecta no servidor
     conexao = psy.connect(
         host="postgres.ata",
         database="pedidos",
@@ -11,88 +13,55 @@ def conectarBD():
     )
     return conexao
     
-def gera_cursor(banco:psy):
-    cursor = banco.cursor()
+def gera_cursor(conexao: psy):  # retorna o cursor
+    cursor = conexao.cursor()
     return cursor
 
-def row_counts(sql):
-    conexao = conectarBD()
-    cursor = gera_cursor(conexao)
-    cursor.execute(sql)
-    num_registros = cursor.rowcount
-    return num_registros
-
-def retorna_sql(banco,item):
-    if banco == 'Laser':
-        sql = "select status from plan_laser where seq = "+item+';'
+def validacao_update(registro,dic_valores:dict):
+    if 'item' in dic_valores:
+        resultado = atualiza_banco('select',registro, dic_valores['item'])
     else:
-        sql = "select status from "+banco+" where OP_MAQ = '"+item+"';"
-    return sql
-    
-def retorna_status(item,banco):
-    conexao = conectarBD()
-    cursor = gera_cursor(conexao)
-    cursor.execute(retorna_sql(banco,item))
-    if cursor.rowcount >1:
+        return msg.item_invalido()
+    print(resultado)
+    if resultado['count_row']>1:
         return msg.registros_multiplos()
-    status = cursor.fetchone()[0]
-    print(status)
-    cursor.close()
-    return status
+    if registro['col_validacao'] in resultado['retorno']:
+        if len(list(dic_valores.values())) >= len(registro['col_change']):
+            valores = []
+            for i in range(len(registro['col_change'])+1):
+                if i ==len(registro['col_change']):
+                    valores.append(list(dic_valores.values())[len(list(dic_valores.values()))-1])    
+                else:
+                    valores.append(list(dic_valores.values())[i])
+            atualiza_banco('update',registro,valores)    
+        else:
+            return msg.item_invalido()
 
-def retorna_termino(item):
+        return msg.retorna_status_finalizado(resultado['count_row'])
+
+    else:
+        return msg.nao_montagem()
+
+
+#Usado pelo log_usuario
+def atualiza_banco(tipo,registro, list_valores):
+    sql = gtsql.gerador_sql(registro)
+    if tipo == 'update':
+       sql_gerado = sql.retorna_sql_update()
+    if tipo == 'select':
+        sql_gerado = sql.retorna_sql_select()
+    if tipo == 'insert':
+        sql_gerado = sql.retorna_sql_insert()
     conexao = conectarBD()
     cursor = gera_cursor(conexao)
-    sql = "select termino from pedidos where OP_MAQ = '"+item+"';"
-    cursor.execute(sql)
-    termino = cursor.fetchone()[0]
-    print(termino)
-    cursor.close()
-    return termino
-
-def gerar_update(sql):
-    conexao = conectarBD()
-    cursor = gera_cursor(conexao) 
-    cursor.execute(sql)
+    resultado = {}
+    if tipo == 'select':
+        cursor.execute(sql_gerado,[list_valores])
+        resultado['retorno'] = cursor.fetchone()
+    else:
+        cursor.execute(sql_gerado,(list_valores))
+    resultado['count_row'] = cursor.rowcount
+    resultado['sql_gerado'] = sql_gerado
     conexao.commit()
-    print(cursor.rowcount)
-    return msg.retorna_status_finalizado(cursor.rowcount)
-
-def gerar_insert(insert,list_valores):
-    conexao = conectarBD()
-    cursor = gera_cursor(conexao) 
-    cursor.execute(insert,list_valores)
-    conexao.commit()
-    print("log atualizado")
+    return(resultado)
     
-def status_montagem(status,sql):
-    if status == 'Montagem':
-        return gerar_update(sql)
-    else:
-        return msg.nao_montagem()
-
-def status_programado(status,sql):
-    if status == 'Programado':
-        return gerar_update(sql)
-    else:
-        return msg.nao_montagem()
-
-def terminado(termino,sql):
-    if termino != None:
-        return gerar_update(sql)
-    else:
-        return msg.nao_terminado()
-
-def status_finalizado(status,sql):
-    if status == "Finalizado":
-        return gerar_update(sql)
-    else:
-        return msg.nao_terminado()
-
-
-#print (retorna_termino('1.270.047'))
-
-#conectarBD('select * from pedidos where id = 1766;')
-#conectarBD("update pedidos set complemento = 'teste' where id = 1766")
-#print(cursor.fetchall())
-

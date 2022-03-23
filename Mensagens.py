@@ -13,7 +13,6 @@ def item_invalido():
 def banco_invalido():
     return msx.showwarning(title='Banco de Inválido',message='Favor selecionar um banco!')
 
-
 def nao_montagem():
     return msx.showwarning(title='Não Finalizado',message='O item informado não está no status de montagem!')
 

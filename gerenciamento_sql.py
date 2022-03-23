@@ -1,22 +1,43 @@
 from datetime import date
 
-class gerenciamento_sql:
-    def __init__(self,banco,item):
-        self.banco = banco
-        self.item = item
+class gerador_sql:
+    def __init__(self,registro):
+        self.registro = registro
+        
 
-    def sql_finalizar_pedidos(self):
-        sql_gerado = 'update '+self.banco+" set Status = 'Pronto', Termino = '"+str(date.today())+"' where OP_MAQ =  '"+self.item + "';"
-        return sql_gerado
+    def retorna_sql_update(self):
+        update = "update "
+        update = update + self.registro['banco']
+        update = update + " set "
+        for i in self.registro['col_change']: update = update + i+"= %s, "
+        update = update[0:len(update)-2]
+        update = update + " where "
+        update = update + self.registro['col_primaria']+ "= %s"
+        print(update)
+        return update
 
-    def sql_finalizar_laser(self,maquina):
-        sql_gerado = "update plan_laser set status = 'Finalizado', Termino = '"+str(date.today())+"', maquina = '"+maquina +"' where seq =  "+self.item + ";"
-        return sql_gerado
-
-    def sql_cancelar_pedidos(self):
-        sql_gerado = 'update '+self.banco +" set status = 'Montagem', Termino = null where OP_MAQ =  '"+self.item+"';"
-        return sql_gerado
-
-    def sql_cancelar_laser(self):
-        sql_gerado = "update plan_laser set status = 'Programado', Termino = null where seq =  "+self.item + ";"
-        return sql_gerado
+    def retorna_sql_insert(self):
+        insert = "insert into "
+        insert = insert + self.registro['banco']
+        insert = insert + " ("
+        for i in self.registro['col_change']: insert = insert + i+", "
+        insert = insert[0:len(insert)-2]
+        insert = insert + ") values("
+        value = str()
+        for _ in range(len(self.registro['col_change'])): value = value + "%s, "
+        insert = insert + value
+        insert = insert[0:len(insert)-2]
+        insert = insert + ");"
+        print(insert)
+        return insert
+        
+    def retorna_sql_select(self):
+        select = "select "
+        select = select + self.registro['col_change'][0]
+        select = select + " from "
+        select = select + self.registro['banco']
+        select = select + " where "
+        select = select + self.registro['col_primaria']
+        select = select + "= %s"
+        print(select)
+        return select

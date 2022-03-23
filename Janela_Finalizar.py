@@ -3,81 +3,68 @@ from tkinter import ttk
 from datetime import date
 import Mensagens
 import log_usuario 
-import gerenciamento_sql as gtsql
-
+import bancos
+import Conexao
 
 # Variaveis
 hoje = date.today().strftime("%d/%m/%Y")
-
-
+dict_banco = {}
+list_valores = {}
 # Funções
-def dict_tabelas():
-    pedidos = { 'banco': 'pedidos',
-        'col_primaria': 'OP_MAQ',
-        'nome':'Pedidos',
-        'col_update':['status','termino']
-    }
-    laser = { 'banco': 'plan_laser',
-        'col_primaria': 'SEQ',
-        'nome':'Laser',
-        'col_update':['status','termino','maquina']
-    }
-    bancos = [pedidos,laser]
-    return bancos
+
+def tabelas(registros):
+    list_tabela=[]
+    for registro in registros:
+        list_tabela.append(registro['nome'])
+    return list_tabela
 
 def valor_cbx(event):
+    global dict_banco
+    dict_banco = bancos.find_dict(cbxBanco.get())
     if cbxBanco.get() == "Pedidos":
         lblStatus['text'] = "Status = 'Pronto'"
         lblOrdens['text'] = 'Favor informar a OP:'
         lbl_maquina.grid_forget()
         cbx_maquina.grid_forget()
+        dict_banco['status'] = 'Pronto'
+        dict_banco['cancelar'] = 'Montagem'
     else:
         lbl_maquina.grid(row=3, column=0, sticky='w', padx=5, pady=5)
         lblStatus['text'] = "Status = 'Finalizado'"
         lblOrdens['text'] = 'Favor informar o ID:'
         lbl_maquina.grid(row=3, column=0, sticky='w', padx=5, pady=5)
         cbx_maquina.grid(row=3, column=1, sticky='w', padx=5, pady=5)
+        dict_banco['status'] = 'Finalizado'
+        dict_banco['cancelar'] = 'Programado'
+
+def update_finalizar():    
+    global dict_banco
+    dicionario = {}
+    dicionario['status'] = dict_banco['status']
+    dicionario['Termino'] = date.today()
+    dicionario['maquina'] = cbx_maquina.get()
+    dicionario['item'] = txtOrdens.get()
+    return dicionario
+    
+def update_cancelar():    
+    global dict_banco
+    dicionario = {}
+    dicionario['status'] = dict_banco['cancelar']
+    dicionario['Termino'] = ''
+    dicionario['maquina'] = cbx_maquina.get()
+    dicionario['item'] = txtOrdens.get()
+    return dicionario
 
 def btn_finalizar():
-    import Conexao as updates
-    import gerenciamento_sql as gtsql
-    if txtOrdens.get() == "":
-        return Mensagens.item_invalido()
-    if cbxBanco.get() == "":
-        return Mensagens.banco_invalido()
-    sql = gtsql.gerenciamento_sql(cbxBanco.get(),txtOrdens.get())
-    if cbxBanco.get() == 'Pedidos':
-        txtFinalizados.insert(tk.END, "Ordem: "+txtOrdens.get()+"\n")
-        print(sql.sql_finalizar_pedidos())
-        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql.sql_finalizar_pedidos())
-        return updates.status_montagem(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql.sql_finalizar_pedidos())
-    else:
-        if cbx_maquina.get() !='':
-            txtFinalizados.insert(tk.END, "Item: "+txtOrdens.get()+"\n")
-            print(sql.sql_finalizar_laser(cbx_maquina.get()))
-            log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql.sql_finalizar_laser(cbx_maquina.get()))
-            return updates.status_programado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql.sql_finalizar_laser())
-        else:
-            return Mensagens.sem_maquina()
-2
+    global dict_banco
+    log = log_usuario.usuario(dict_banco,update_finalizar())
+    log.insert_usuario()
+    return Conexao.validacao_update(dict_banco,update_finalizar())
+    
+        
+
 def sql_Cancelar():
-    import Conexao as updates
-    import gerenciamento_sql as gtsql
-    if cbxBanco.get() == "":
-        return Mensagens.banco_invalido()
-    if txtOrdens.get() == "":
-        return Mensagens.item_invalido()
-    sql = gtsql.gerenciamento_sql(cbxBanco.get(),txtOrdens.get())
-    if cbxBanco.get() == 'Pedidos':        
-        txtFinalizados.insert(tk.END, "Cancelado Ordem: "+txtOrdens.get()+"\n")
-        print(sql.sql_cancelar_pedidos())
-        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql.sql_cancelar_pedidos())
-        return updates.terminado(updates.retorna_termino(txtOrdens.get()),sql.sql_cancelar_pedidos())
-    else:
-        txtFinalizados.insert(tk.END, "Cancelado Item: "+txtOrdens.get()+"\n")
-        print(sql.sql_cancelar_laser())
-        log_usuario.atualiza_usuario(cbxBanco.get(),txtOrdens.get(),sql.sql_cancelar_laser())
-        return updates.status_finalizado(updates.retorna_status(txtOrdens.get(),cbxBanco.get()),sql.sql_cancelar_laser())
+    return
 
 
 # Recursos da Janela
@@ -91,7 +78,7 @@ lblTabela = tk.Label(tblFrame, text='Selecione a Tabela:')
 lblStatus = tk.Label(tblFrame, text='Status = ')
 lblData = tk.Label(tblFrame, text='Data = '+hoje)
 lblOrdens = tk.Label(tblFrame, text='Favor informar o ID!')
-cbxBanco = ttk.Combobox(tblFrame, width=17, values=["Pedidos", "Plan_laser"])
+cbxBanco = ttk.Combobox(tblFrame, width=17, values=tabelas(bancos.dict_tabelas()))
 txtOrdens = tk.Entry(tblFrame)
 btnFinalizar = tk.Button(tblBotoes, text='Finalizar', command=btn_finalizar)
 btnCancelar = tk.Button(tblBotoes, text='Cancelar', command=sql_Cancelar)
@@ -115,5 +102,4 @@ btnCancelar.grid(row=0, column=1, sticky='w', padx=5, pady=10)
 txtFinalizados.grid(row=6, column=0, columnspan=2, pady=5)
 
 cbxBanco.bind("<<ComboboxSelected>>", valor_cbx)
-
 janela.mainloop()
