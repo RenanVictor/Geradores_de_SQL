@@ -61,8 +61,6 @@ def btn_finalizar():
     log.insert_usuario()
     return Conexao.validacao_update(dict_banco,update_finalizar())
     
-        
-
 def sql_Cancelar():
     return
 
