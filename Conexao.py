@@ -1,4 +1,3 @@
-from numpy import append
 import psycopg2 as psy
 import Mensagens as msg
 import gerenciamento_sql as gtsql
@@ -36,11 +35,9 @@ def validacao_update(registro,dic_valores:dict):
             atualiza_banco('update',registro,valores)    
         else:
             return msg.item_invalido()
-
         return msg.retorna_status_finalizado(resultado['count_row'])
-
     else:
-        return msg.nao_montagem()
+        return msg.nao_validado(registro['col_validacao'])
 
 
 #Usado pelo log_usuario
@@ -64,4 +61,10 @@ def atualiza_banco(tipo,registro, list_valores):
     resultado['sql_gerado'] = sql_gerado
     conexao.commit()
     return(resultado)
-    
+
+def select_log(sql):
+    conexao = conectarBD()
+    cursor = gera_cursor(conexao)
+    cursor.execute(sql)
+    return cursor.fetchall()
+

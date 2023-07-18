@@ -17,7 +17,13 @@ def dict_tabelas():
         'col_change':['banco','item','data_log','usuario','num_registro','log_sql'],
         'col_validacao': ''
     }
-    bancos = [pedidos,laser,log]
+    componentes = { 'banco': 'pedidos',
+        'col_primaria': 'ID',
+        'nome':'Comp.',
+        'col_change':['status','termino'],
+        'col_validacao': 'Primários'
+    }
+    bancos = [pedidos,laser,log,componentes]
     return bancos
 
 def create_dictOfDict(dicionario,chave):

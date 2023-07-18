@@ -46,8 +46,10 @@ Este é um projeto simples para aprendizado pessoal.
 
 ## 4. Lançamento para usuário final com acomnpanhamentos (*Aguardando*)
 
-* [ ] Trazer os histórico de registros por usuário sempre que abrir o programa (registros mensais)
+* [X] Adicionado o recurso de finalizar itens componentes no programa **2023-07-14**.
+* [X] Trazer os histórico de registros por usuário sempre que abrir o programa (últimos 5 registros) **2023-07-17**
 * [X] Melhorar o código para as futuras implementações de novos recursos
+* [ ] Melhorar a visualização do histórico de registros do usuário.
 * [ ] Modelagem de opções de acordo com os registros nas tabelas escolhidas
 
 ## **Testes**

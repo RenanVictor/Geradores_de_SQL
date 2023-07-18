@@ -28,6 +28,13 @@ def valor_cbx(event):
         cbx_maquina.grid_forget()
         dict_banco['status'] = 'Pronto'
         dict_banco['cancelar'] = 'Montagem'
+    elif cbxBanco.get() == "Comp.":
+        lblStatus['text'] = "Status = 'Reportada'"
+        lblOrdens['text'] = 'Favor informar o ID:'
+        lbl_maquina.grid_forget()
+        cbx_maquina.grid_forget()
+        dict_banco['status'] = 'Reportada'
+        dict_banco['cancelar'] = 'Primários'
     else:
         lbl_maquina.grid(row=3, column=0, sticky='w', padx=5, pady=5)
         lblStatus['text'] = "Status = 'Finalizado'"
@@ -59,10 +66,24 @@ def btn_finalizar():
     global dict_banco
     log = log_usuario.usuario(dict_banco,update_finalizar())
     log.insert_usuario()
+    upgrade_register()
     return Conexao.validacao_update(dict_banco,update_finalizar())
     
 def sql_Cancelar():
     return
+
+def upgrade_register():
+    txtFinalizados.delete('1.0',tk.END)
+    registros = log_usuario.return_last_register()
+    txtFinalizados.insert(tk.END,'BANCOS |   INFO   | DATA \n')
+    for lista in registros:
+        for item in lista:
+            if isinstance(item,date):
+                txtFinalizados.insert(tk.END,item)
+            else:
+                txtFinalizados.insert(tk.END,item[0:9])
+                txtFinalizados.insert(tk.END,'|')
+        txtFinalizados.insert(tk.END,'\n')
 
 
 # Recursos da Janela
@@ -83,7 +104,7 @@ btnCancelar = tk.Button(tblBotoes, text='Cancelar', command=sql_Cancelar)
 txtFinalizados = tk.Text(janela, width=30, height=10)
 lbl_maquina = tk.Label(tblFrame, text='Máquina')
 cbx_maquina = ttk.Combobox(tblFrame, width=17, values=[
-                           'LASER-1', 'LASER-2', 'LASER-3', 'PLASMA', 'PUNC.'])
+                           'DOBRA-1','DOBRA-2','LASER-1', 'LASER-2', 'LASER-3', 'PLASMA','PRENSA','PUNC.','TUBE'])
 
 # layout da janela
 lblBanco.grid(row=0, column=0, sticky='', pady=5)
@@ -100,4 +121,6 @@ btnCancelar.grid(row=0, column=1, sticky='w', padx=5, pady=10)
 txtFinalizados.grid(row=6, column=0, columnspan=2, pady=5)
 
 cbxBanco.bind("<<ComboboxSelected>>", valor_cbx)
+upgrade_register()
+
 janela.mainloop()

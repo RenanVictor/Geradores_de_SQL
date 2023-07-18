@@ -21,6 +21,8 @@ class usuario:
         Conexao.atualiza_banco('insert',dict_log,self.list_valores())
         print('Log atualizado com sucesso!')
    
-
-
-
+def return_last_register():
+    usuario = os.getlogin()
+    sql = f"select banco,item,data_log from log_usuario where usuario = '{usuario}' order by id DESC limit 8"
+    resultado = Conexao.select_log(sql)
+    return resultado

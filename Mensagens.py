@@ -13,8 +13,8 @@ def item_invalido():
 def banco_invalido():
     return msx.showwarning(title='Banco de Inválido',message='Favor selecionar um banco!')
 
-def nao_montagem():
-    return msx.showwarning(title='Não Finalizado',message='O item informado não está no status de montagem!')
+def nao_validado(validacao):
+    return msx.showwarning(title='Não Finalizado',message=f'O item informado não está no status de {validacao}!')
 
 def nao_programado():
     return msx.showwarning(title='Não Finalizado',message='O item informado não está no status de programado!')
