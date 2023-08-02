@@ -16,12 +16,12 @@ def gera_cursor(conexao: psy):  # retorna o cursor
     cursor = conexao.cursor()
     return cursor
 
+#Usado na interface finalizar
 def validacao_update(registro,dic_valores:dict):
     if 'item' in dic_valores:
         resultado = atualiza_banco('select',registro, dic_valores['item'])
     else:
         return msg.item_invalido()
-    print(resultado)
     if resultado['count_row']>1:
         return msg.registros_multiplos()
     if registro['col_validacao'] in resultado['retorno']:
@@ -35,7 +35,28 @@ def validacao_update(registro,dic_valores:dict):
             atualiza_banco('update',registro,valores)    
         else:
             return msg.item_invalido()
-        return msg.retorna_status_finalizado(resultado['count_row'])
+        return msg.retorna_status_alterado(resultado['count_row'])
+    else:
+        return msg.nao_validado(registro['col_validacao'])
+
+def validacao(registro,dic_valores:dict):
+    if 'item' in dic_valores:
+        resultado = atualiza_banco('select',registro, dic_valores['item'])
+    else:
+        return msg.item_invalido()
+    if resultado['count_row']>1:
+        return msg.registros_multiplos()
+    if registro['col_validacao'] in resultado['retorno']:
+        if len(list(dic_valores.values())) >= len(registro['col_change']):
+            valores = []
+            for i in range(len(registro['col_change'])+1):
+                if i ==len(registro['col_change']):
+                    valores.append(list(dic_valores.values())[len(list(dic_valores.values()))-1])    
+                else:
+                    valores.append(list(dic_valores.values())[i])
+            return (registro,valores)
+        else:
+            return msg.item_invalido()
     else:
         return msg.nao_validado(registro['col_validacao'])
 
@@ -68,3 +89,15 @@ def select_log(sql):
     cursor.execute(sql)
     return cursor.fetchall()
 
+# usado na interface estado
+def select_status(banco):
+    sql = f"select distinct(status) from {banco}"
+    conexao = conectarBD()
+    cursor = gera_cursor(conexao)
+    cursor.execute(sql)
+    resultado = cursor.fetchall()
+    lista=[]
+    for item in resultado:
+        lista.append(item[0])
+    lista
+    return lista

@@ -1,10 +1,10 @@
 import tkinter.messagebox as msx
 
-def retorna_status_finalizado(number):
+def retorna_status_alterado(number):
     if number==0:
         return msx.showerror(title='Item não encontrado!',message='Favor verificar o item informado!')
     if number==1:
-        return msx.showinfo(title='Finalizado',message='Item finalizado com sucesso!')
+        return msx.showinfo(title='Finalizado',message='Item alterado com sucesso!')
     return 
 
 def item_invalido():

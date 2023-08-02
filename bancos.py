@@ -22,7 +22,9 @@ def dict_tabelas():
         'nome':'Comp.',
         'col_change':['status','termino'],
         'col_validacao': 'Primários'
+    
     }
+
     bancos = [pedidos,laser,log,componentes]
     return bancos
 

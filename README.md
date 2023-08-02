@@ -40,7 +40,7 @@ Este é um projeto simples para aprendizado pessoal.
 * [X] Armazenar todos os registros enviados para finalizar itens para a tabela *log_usuario*
 * [X] Gerar o insert através da lista de registros
 
-### 3.1
+### 3.1 melhorias e atualizações
 
 * O campo do combobox_banco passa de Laser para plan_laser (nome íntegro da tabela)
 
@@ -50,7 +50,25 @@ Este é um projeto simples para aprendizado pessoal.
 * [X] Trazer os histórico de registros por usuário sempre que abrir o programa (últimos 5 registros) **2023-07-17**
 * [X] Melhorar o código para as futuras implementações de novos recursos
 * [ ] Melhorar a visualização do histórico de registros do usuário.
-* [ ] Modelagem de opções de acordo com os registros nas tabelas escolhidas
+* [X] Incluir as GUI nas abas para escolher as opções. **2023-07-18**
+
+### 4.1 melhorias e atualizações
+
+* Atualizar o executável.
+* Testar a função de cancelar item Finalizado.
+
+## 5. Criar a interface para alterar o estado dos itens de acordo com o banco escolhido
+
+* [X] criar a janela com o designe e opções de alteração de estado. **2023-07-19**
+* [X] o Combobox terá que buscar todos os estados encontrado no banco de acordo com o banco escolhido.**2023-07-19**
+* [X] Desenvolver o lançamento no banco para alteração do estado do item. **2023-07-21**
+* [ ] Implementar no dict do banco, a informação da interface que pode ser usado.
+   ``` python
+    ex. pedidos = {'usado':['interface_estado','interface_finalizar']}
+   ```
+* [ ] Criar uma consulta dos itens por tipo e estado.
+* [ ] Limitar estados e criar tratamento de erro.
+* [ ] utilizar o método de validação de uma forma mais abrangente, redefinir a função.
 
 ## **Testes**
 
