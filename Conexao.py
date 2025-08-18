@@ -4,11 +4,11 @@ import gerenciamento_sql as gtsql
 
 def conectarBD():  # Se conecta no servidor
     conexao = psy.connect(
-        host="postgres.ata",
+        host="pg-admin.ata",
         database="pedidos",
-        port=5000,
+        port=5432,
         user="renan",
-        password="rev@123"
+        password="renan123"
     )
     return conexao
     

@@ -3,9 +3,7 @@ from tkinter import ttk
 import interface_Finalizar as iff 
 import interface_estado as ife
 
-
 #def aba_update():
-
 
 #Janelas
 janela = tk.Tk()
@@ -25,15 +23,6 @@ aba_notebook.add(aba3, text='Delete')
 iff.interface_finalizar(aba1,janela)
 ife.interface_estado(aba2,janela)
 
-
 #Recursos Janela
 aba_notebook.grid(column=0)
-
-
-
-
-
-
 janela.mainloop()
-
-
