@@ -62,10 +62,17 @@ Este é um projeto simples para aprendizado pessoal.
 * [X] criar a janela com o designe e opções de alteração de estado. **2023-07-19**
 * [X] o Combobox terá que buscar todos os estados encontrado no banco de acordo com o banco escolhido.**2023-07-19**
 * [X] Desenvolver o lançamento no banco para alteração do estado do item. **2023-07-21**
-* [ ] Implementar no dict do banco, a informação da interface que pode ser usado.
-   ``` python
-    ex. pedidos = {'usado':['interface_estado','interface_finalizar']}
-   ```
+
+## 6. Adicionar algumas funções novas
+
+* [X] Adicionar o campo de complemento na aba finalizar. **2026-10-27**
+* [X] Criar aba para adicionar complementos/previsao. **2026-10-28**
+* [X] Acertar envio de previsao como data para a tabela pedidos. **2026-10-29**
+* [] **Aba Comentários** - Verificar os bancos com as colunas disponíveis, ou permitir apenas o pedidos.
+* [] Resolver erro do insert no banco de dados log, está enviando o select ao invés de enviar o update realizado.
+
+## 7. Implementações futuras
+
 * [ ] Criar uma consulta dos itens por tipo e estado.
 * [ ] Limitar estados e criar tratamento de erro.
 * [ ] utilizar o método de validação de uma forma mais abrangente, redefinir a função.
@@ -81,3 +88,11 @@ Este é um projeto simples para aprendizado pessoal.
 * ### **2022-02-02** - Testado as funções implementadas para a versão inicial 2.0 para o banco plan_laser
 
 * ### **2022-02-03** - Acertado e testado funcionalizadde do botão cancelar para o banco *pedidos*
+
+* ### **2026-10-27** - Acertado o método *validacao_update* no arquivo *conexao.py*
+
+   ``` python
+      Saiu:       valores.append(list(dic_valores.values())[i])
+      adicionou:  valores.append(dic_valores[registro['col_change'][i]])
+   ```
+

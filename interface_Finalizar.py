@@ -44,8 +44,8 @@ def interface_finalizar(root, mainRoot):
             lbl_maquina.grid(row=3, column=0, sticky='w', padx=5, pady=5)
             lblStatus['text'] = "Status = 'Finalizado'"
             lblOrdens['text'] = 'Favor informar o ID:'
-            lbl_maquina.grid(row=3, column=0, sticky='w', padx=5, pady=5)
-            cbx_maquina.grid(row=3, column=1, sticky='w', padx=5, pady=5)
+            lbl_maquina.grid(row=4, column=0, sticky='w', padx=5, pady=5)
+            cbx_maquina.grid(row=4, column=1, sticky='w', padx=5, pady=5)
             dict_banco['status'] = 'Finalizado'
             dict_banco['cancelar'] = 'Programado'
 
@@ -53,7 +53,8 @@ def interface_finalizar(root, mainRoot):
         global dict_banco
         dicionario = {}
         dicionario['status'] = dict_banco['status']
-        dicionario['Termino'] = date.today()
+        dicionario['termino'] = date.today()
+        dicionario['complemento'] = txtComplemento.get()
         dicionario['maquina'] = cbx_maquina.get()
         dicionario['item'] = txtOrdens.get()
         return dicionario
@@ -104,7 +105,7 @@ def interface_finalizar(root, mainRoot):
     lblTabela = tk.Label(tblFrame, text='Selecione a Tabela:')
     lblStatus = tk.Label(tblFrame, text='Status = ')
     lblData = tk.Label(tblFrame, text='Data = '+hoje)
-    lblOrdens = tk.Label(tblFrame, text='Favor informar o ID!')
+    lblOrdens = tk.Label(tblFrame, text='Favor informar a OP!')
     cbxBanco = ttk.Combobox(tblFrame, width=17, values=tabelas(bancos.dict_tabelas()))
     txtOrdens = tk.Entry(tblFrame)
     btnFinalizar = tk.Button(tblBotoes, text='Finalizar', command=btn_finalizar)
@@ -113,6 +114,8 @@ def interface_finalizar(root, mainRoot):
     lbl_maquina = tk.Label(tblFrame, text='Máquina')
     cbx_maquina = ttk.Combobox(tblFrame, width=17, values=[
                             'DOBRA-1','DOBRA-2','LASER-1', 'LASER-2', 'LASER-3', 'PLASMA','PRENSA','PUNC.','TUBE'])
+    lblComplemento = tk.Label(tblFrame,text='Complemento:')
+    txtComplemento = tk.Entry(tblFrame)
 
     # layout da janela
     lblBanco.grid(row=0, column=0, sticky='', pady=5)
@@ -121,12 +124,15 @@ def interface_finalizar(root, mainRoot):
     cbxBanco.grid(row=0, column=1, sticky='w', padx=5)
     lblStatus.grid(row=1, column=0, sticky='w', pady=5, padx=5)
     lblData.grid(row=1, column=1, sticky='w', padx=5)
-    lblOrdens.grid(row=2, column=0, padx=5, pady=5)
+    lblOrdens.grid(row=2, column=0, sticky='w',padx=5)
     txtOrdens.grid(row=2, column=1, sticky='w', padx=5)
+    lblComplemento.grid(row=3, column=0,sticky='w',padx=5)
+    txtComplemento.grid(row=3,column=1,pady=5)
     tblBotoes.grid(row=5, column=0, sticky='w')
     btnFinalizar.grid(row=0, column=0, sticky='w', padx=5, pady=10)
     btnCancelar.grid(row=0, column=1, sticky='w', padx=5, pady=10)
     txtFinalizados.grid(row=6, column=0, columnspan=2, pady=5)
+    
 
     cbxBanco.bind("<<ComboboxSelected>>", valor_cbx)
     upgrade_register()

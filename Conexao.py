@@ -31,7 +31,8 @@ def validacao_update(registro,dic_valores:dict):
                 if i ==len(registro['col_change']):
                     valores.append(list(dic_valores.values())[len(list(dic_valores.values()))-1])    
                 else:
-                    valores.append(list(dic_valores.values())[i])
+                    valores.append(dic_valores[registro['col_change'][i]])
+                    
             atualiza_banco('update',registro,valores)    
         else:
             return msg.item_invalido()

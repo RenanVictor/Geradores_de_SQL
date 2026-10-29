@@ -14,7 +14,7 @@ def interface_estado(root, mainRoot):
     
     def update_estado():
         dict_banco = bancos.find_dict(cbx_banco.get())
-        dict_banco['col_change'] = ['Status']
+        dict_banco['col_change'] = ['status']
         
         dicionario = {}
         dicionario['status'] = cbx_estado.get()

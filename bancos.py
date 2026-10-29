@@ -2,7 +2,7 @@ def dict_tabelas():
     pedidos = { 'banco': 'pedidos',
         'col_primaria': 'OP_MAQ',
         'nome':'Pedidos',
-        'col_change':['status','termino'],
+        'col_change':['status','termino','complemento'],
         'col_validacao': 'Montagem'
     }
     laser = { 'banco': 'plan_laser',
